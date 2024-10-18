@@ -91,7 +91,7 @@ function App() {
 
   if (loading) {
     return (
-      <div className='w-full h-screen flex justify-center items-center'>
+      <div className='bg-gray-900 w-full h-screen flex justify-center items-center'>
         <img src={loader} className='w-16' alt="Loading..." />
       </div>
     );
@@ -101,13 +101,14 @@ function App() {
   const chartData = aggregateData(data, filter);
 
   return (
-    <div className="container w-[80%] m-auto my-5">
-      <h1 className='font-extrabold' style={{color:'#F07F19', textAlign:'center', fontFamily:'cursive', fontSize:'50px'}}>Student Connections Graph</h1>
+    <div className=' py-5'> 
+      <div className="container  w-[70%] m-auto ">
+      <h1 className='font-extrabold py-4' style={{color:'#F07F19', textAlign:'center', fontFamily:'cursive', fontSize:'50px'}}>Student Connections Graph</h1>
       
       <div className='flex justify-end items-center' style={{fontFamily:'cursive'}}>
         <label htmlFor="filter-select" className='text-gray-400'>Filter By : </label>
         <select 
-          className='bg-gray-200 text-gray-700 rounded-md py-1 px-2'
+          className='bg-gray-200 dark:bg-gray-700 dark:text-gray-200 text-center text-gray-700 rounded-md py-1 px-2'
           id="filter-select"
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
@@ -146,6 +147,9 @@ function App() {
         }}
       />
     </div>
+
+    </div>
+   
   );
 }
 
