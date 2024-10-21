@@ -14,7 +14,6 @@ function App() {
   const [endDate, setEndDate] = useState('');
 
   useEffect(() => {
-    // Load saved state from localStorage
     const savedFilter = localStorage.getItem('filter');
     const savedStartDate = localStorage.getItem('startDate');
     const savedEndDate = localStorage.getItem('endDate');
@@ -23,7 +22,6 @@ function App() {
     if (savedStartDate) setStartDate(savedStartDate);
     if (savedEndDate) setEndDate(savedEndDate);
 
-    // Fetch data from API
     axios.get('https://www.yool.education/api/student-connections')
       .then(response => {
         setData(response.data);
@@ -36,13 +34,11 @@ function App() {
   }, []);
 
   useEffect(() => {
-    // Save state to localStorage whenever it changes
     localStorage.setItem('filter', filter);
     localStorage.setItem('startDate', startDate);
     localStorage.setItem('endDate', endDate);
   }, [filter, startDate, endDate]);
 
-  // Filter data by selected date range
   const filterDataByDateRange = (data, start, end) => {
     if (!start || !end) {
       return data; // If no date is selected, return all data
@@ -66,9 +62,9 @@ function App() {
           {
             label: 'Connections',
             data: filteredData.map(item => item.connections),
-            backgroundColor: '#1a4080',
-            borderColor: '#1a4080',
-            hourData: filteredData.map(item => item.hour), // Store hour data for tooltip
+            backgroundColor: '#6495ed',
+            borderColor: '#6495ed',
+            hourData: filteredData.map(item => item.hour),
           },
         ],
       };
@@ -102,17 +98,24 @@ function App() {
         {
           label: 'Connections',
           data: Object.values(aggregatedData).map(month => month.connections),
-          backgroundColor: '#1a4080',
-          borderColor: '#1a4080',
-          hourData: Object.values(aggregatedData).map(month => month.hour), // Include hour data here
+          backgroundColor: '#6495ed',
+          borderColor: '#6495ed',
+          hourData: Object.values(aggregatedData).map(month => month.hour),
         },
       ],
     };
   };
 
+  // Function to clear filters and dates
+  const clearFilters = () => {
+    setFilter('all');
+    setStartDate('');
+    setEndDate('');
+  };
+
   if (loading) {
     return (
-      <div className='bg-gray-900 w-full h-screen flex justify-center items-center'>
+      <div className='bg-gray-100 dark:bg-gray-900 w-full h-screen flex justify-center items-center'>
         <img src={loader} className='w-16' alt="Loading..." />
       </div>
     );
@@ -148,10 +151,11 @@ function App() {
               />
             </div>
           </div>
-          <div className='flex justify-end items-center'>
-            <label htmlFor="filter-select" className='text-gray-400'>Filter By : </label>
+          
+          <div className='flex items-center'>
+            <label htmlFor="filter-select" className='text-gray-400'>Filter By: </label>
             <select 
-              className='bg-gray-200 dark:bg-gray-700 dark:text-gray-200 text-center text-gray-700 rounded-md py-1 px-2'
+              className='bg-gray-200 dark:bg-gray-700 dark:text-gray-200 text-center text-gray-700 rounded-md py-1 px-2 ml-2'
               id="filter-select"
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
@@ -161,6 +165,14 @@ function App() {
               <option value="weekly">Week</option>
               <option value="daily">Day</option>
             </select>
+
+            {/* Clear Button */}
+            <button 
+              className='bg-red-500 text-white rounded-md py-1 px-4 ml-4'
+              onClick={clearFilters}
+            >
+              Clear
+            </button>
           </div>
         </div>
 
